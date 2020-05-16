@@ -23,25 +23,21 @@ class RemoveCommand
     alias = "r",
     tabCompletable = true
 ) {
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
 
         if (args.size < 2) {
             player.message(NOT_ENOUGH_ARGS)
             return
         }
-        val name = args[0]
-        if (getKitByName(name) == null) {
-            player.message(KIT_NOT_EXIST)
-            return
-        }
-        val k = getKitByName(name)!!
+        val kitName = args[1]
+        val k = getKitByName(kitName) ?: return player.message(KIT_NOT_EXIST)
         val e = PlayerRemoveKitEvent(player, k)
         plugin.server.pluginManager.callEvent(e)
         if(e.isCancelled) {
             return
         }
          playerData.getConfigurationSection("").getKeys(true).forEach {
-            if(playerData.get("$it.lastclass") == name) {
+            if(playerData.get("$it.lastclass") == kitName) {
                 playerData.set("$it.lastclass", null)
                 currentKit.remove(UUID.fromString(it))
                 playerData.save()
@@ -49,21 +45,21 @@ class RemoveCommand
         }
 
         for (s in kitData.getConfigurationSection("").getKeys(false)) {
-            if (s == name) {
-                val kit = getKitByName(name)!!
+            if (s == kitName) {
+                val kit = getKitByName(kitName)!!
                 kitDelay.remove(kit)
                 kitData.set(s, null)
                 kitData.save()
             }
         }
-        val keys = kitConfig.getConfigurationSection(name).getKeys(true)
+        val keys = kitConfig.getConfigurationSection(kitName).getKeys(true)
         keys.forEach {
-            kitConfig.set("$name.$it", null)
+            kitConfig.set("$kitName.$it", null)
         }
-        kitConfig.set(name, null)
+        kitConfig.set(kitName, null)
         kitConfig.save()
-        kit.remove(getKitByName(name)!!)
-        player.message("&cКит &6$name &cуспешно удалён")
+        kit.remove(getKitByName(kitName)!!)
+        player.message("&cКит &6$kitName&c успешно удалён")
 
     }
 }

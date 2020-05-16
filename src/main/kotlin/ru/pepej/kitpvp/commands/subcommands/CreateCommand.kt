@@ -20,7 +20,7 @@ class CreateCommand
     alias = "c",
     tabCompletable =  false
 ) {
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
         if (args.size < 4) {
             player.message(NOT_ENOUGH_ARGS)
             return

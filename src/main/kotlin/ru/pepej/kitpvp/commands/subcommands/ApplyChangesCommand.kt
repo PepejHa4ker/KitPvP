@@ -20,7 +20,7 @@ class ApplyChangesCommand
     tabCompletable = false
 ) {
 
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
         if (editingKit.contains(player.uniqueId)) {
             val k = editingKit[player.uniqueId]!!
             val e = PlayerApplyChangesEvent(player, k)

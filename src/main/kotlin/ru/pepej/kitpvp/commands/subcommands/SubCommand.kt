@@ -11,6 +11,5 @@ abstract class SubCommand(
     val alias: String,
     val tabCompletable: Boolean
 ) {
-
-    abstract fun execute(player: Player, args: Array<out String>)
+    abstract fun onSubCommand(player: Player, args: Array<out String>)
 }

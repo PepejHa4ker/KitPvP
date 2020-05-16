@@ -21,18 +21,14 @@ class EditCommand
         val editingKit = HashMap<UUID, Kit>()
     }
 
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
         if(args.size < 2) {
             player.message(NOT_ENOUGH_ARGS)
             return
         }
 
         val name = args[1]
-        if (getKitByName(name) == null) {
-            player.message(KIT_NOT_EXIST)
-            return
-        }
-        val kit = getKitByName(name)!!
+        val kit = getKitByName(name) ?: return player.message(KIT_NOT_EXIST)
         val e = PlayerEditKitEvent(player,kit)
         plugin.server.pluginManager.callEvent(e)
         if(e.isCancelled) {

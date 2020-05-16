@@ -20,18 +20,12 @@ class PreviewCommand
     tabCompletable = true
 ) {
 
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
         if(args.size < 2) {
             player.message(NOT_ENOUGH_ARGS)
             return
         }
-        val kitName = args[1]
-        val kit = KitManager.getKitByName(kitName)
-        if (kit != null) {
-            PreviewMenu(kit, getPlayerMenuUtility(player)).open()
-        } else {
-            player.message(KIT_NOT_EXIST)
-        }
+        val kit = KitManager.getKitByName(args[1]) ?: return player.message(KIT_NOT_EXIST)
+        PreviewMenu(kit, getPlayerMenuUtility(player)).open()
     }
-
 }

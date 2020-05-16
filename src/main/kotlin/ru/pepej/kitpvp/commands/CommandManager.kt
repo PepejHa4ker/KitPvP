@@ -11,20 +11,20 @@ import ru.pepej.kitpvp.utils.*
 class CommandManager : TabExecutor {
 
     companion object {
-        private val subcommands = mutableListOf<SubCommand>()
+        private val subCommands = mutableListOf<SubCommand>()
         fun getSubCommands(): MutableList<SubCommand> {
-            return subcommands
+            return subCommands
         }
     }
 
     init {
-        subcommands.add(ApplyChangesCommand())
-        subcommands.add(CreateCommand())
-        subcommands.add(EditCommand())
-        subcommands.add(HelpCommand())
-        subcommands.add(RemoveCommand())
-        subcommands.add(PreviewCommand())
-        subcommands.add(KitCommand())
+        subCommands.add(ApplyChangesCommand())
+        subCommands.add(CreateCommand())
+        subCommands.add(EditCommand())
+        subCommands.add(HelpCommand())
+        subCommands.add(RemoveCommand())
+        subCommands.add(PreviewCommand())
+        subCommands.add(KitCommand())
     }
 
     override fun onCommand(
@@ -53,6 +53,10 @@ class CommandManager : TabExecutor {
                     if (sender.hasPermission(it.permission)) {
                         toPrint.add("&c${it.syntax}&7(${it.alias}) &6- &c${it.description}")
                     }
+                    if(toPrint.isEmpty()) {
+                        sender.message("&cУ Вас нет доступных команд.")
+                        return true
+                    }
                     toPrint.forEach { msg -> sender.message(msg) }
                 }
                 return true
@@ -70,7 +74,7 @@ class CommandManager : TabExecutor {
                     sender.message(NO_PERMISSION)
                     return true
                 }
-                getSubCommands()[i.index].execute(sender.toPlayer(), args)
+                getSubCommands()[i.index].onSubCommand(sender.toPlayer(), args)
                 return true
             }
         }

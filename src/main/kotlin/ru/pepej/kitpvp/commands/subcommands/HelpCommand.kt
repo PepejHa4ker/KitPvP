@@ -12,7 +12,7 @@ class HelpCommand
     alias = "h",
     tabCompletable = false
 ) {
-    override fun execute(player: Player, args: Array<out String>) {
+    override fun onSubCommand(player: Player, args: Array<out String>) {
 
         player.message(
             "          &cKit&6PvP",
@@ -21,7 +21,11 @@ class HelpCommand
         getSubCommands().forEach {
             val toPrint = mutableListOf<String>()
             if(player.hasPermission(it.permission)) {
-                toPrint.add("&c${it.syntax}&7(${it.alias}) &6- &c${it.description}")
+                toPrint.add("&c${it.syntax}&8(${it.alias}) &6- &c${it.description}")
+            }
+            if(toPrint.isEmpty()) {
+                player.message("&cУ Вас нет доступных команд.")
+                return
             }
             toPrint.forEach { msg -> player.message(msg) }
         }
