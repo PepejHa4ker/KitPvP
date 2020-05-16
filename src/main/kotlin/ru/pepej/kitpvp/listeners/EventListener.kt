@@ -28,12 +28,11 @@ import ru.pepej.kitpvp.KitPvPCore.Companion.timesPlayed
 import ru.pepej.kitpvp.api.events.player.PlayerKilledByPlayerEvent
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
-import ru.pepej.kitpvp.commands.subcommands.PreviewCommand.Companion.leave
-import ru.pepej.kitpvp.commands.subcommands.PreviewCommand.Companion.previewMenu
 import ru.pepej.kitpvp.kit.KitManager.getKitByName
 import ru.pepej.kitpvp.listeners.Listener.Companion.arenas
 import ru.pepej.kitpvp.listeners.Listener.Companion.isShootIsBlackHole
 import ru.pepej.kitpvp.listeners.Listener.Companion.snb
+import ru.pepej.kitpvp.menusystem.Menu
 import ru.pepej.kitpvp.tasks.BlidnessArenaTask
 import ru.pepej.kitpvp.tasks.BombTask
 import ru.pepej.kitpvp.tasks.HookTask
@@ -243,18 +242,15 @@ class EventListener : Listener {
     }
 
     @EventHandler
-    fun onPreviewClick(e: InventoryClickEvent) {
-        val p = e.whoClicked as? Player? ?: return
-        if (e.inventory != null && e.view.topInventory != null) {
-            if (e.view.topInventory == previewMenu) {
-                e.isCancelled = true
-                if (e.currentItem != null && e.currentItem == leave) {
-                    if (e.isShiftClick || e.click == ClickType.NUMBER_KEY || e.click == ClickType.SHIFT_LEFT || e.click == ClickType.SHIFT_RIGHT) {
-                        return
-                    }
-                    p.closeInventory()
-                }
+    fun onMenuClick(e: InventoryClickEvent) {
+        if (e.whoClicked !is Player) return
+        val holder = e.inventory.holder
+        if(holder is Menu) {
+            e.isCancelled = true
+            if(e.currentItem == null) {
+                return
             }
+            holder.handleMenu(e)
         }
     }
 

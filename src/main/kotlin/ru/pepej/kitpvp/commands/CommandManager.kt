@@ -3,10 +3,12 @@ package ru.pepej.kitpvp.commands
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabExecutor
+import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.commands.subcommands.*
 import ru.pepej.kitpvp.utils.*
 
-class CommandManager : CommandExecutor {
+class CommandManager : TabExecutor {
 
     companion object {
         private val subcommands = mutableListOf<SubCommand>()
@@ -64,6 +66,54 @@ class CommandManager : CommandExecutor {
             }
         }
         return true
+    }
+
+
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<out String>
+    ): MutableList<String>? {
+        if(!sender.hasPermission("$COMMANDS_PERMISSION.kit")) {
+            return null
+        }
+        if(args.size == 1) {
+            val toPrint = mutableListOf<String>()
+            for(cmd in getSubCommands()) {
+                if(sender.hasPermission(cmd.permission)) {
+                    toPrint.add(cmd.name)
+                }
+            }
+            return toPrint
+        }
+
+
+        if (args.size == 2) {
+            val kitsName = mutableListOf<String>()
+            for(cmd in getSubCommands()) {
+                if(args[0].equals(cmd.name,true)) {
+                    if(!cmd.tabCompletable) {
+                        return null
+                    }
+                }
+            }
+            if (args[1] != "") {
+                for (k in KitPvPCore.kit.iterator()) {
+                    if (k.kitName.startsWith(args[1].toLowerCase())) {
+                        kitsName.add(k.kitName)
+                    }
+                }
+            } else {
+                for (k in KitPvPCore.kit.iterator()) {
+                    kitsName.add(k.kitName)
+                }
+            }
+            kitsName.sort()
+            return kitsName
+        }
+
+        return null
     }
 
 }

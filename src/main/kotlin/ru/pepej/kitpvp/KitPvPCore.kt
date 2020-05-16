@@ -6,6 +6,7 @@ import br.com.devsrsouza.kotlinbukkitapi.architecture.KotlinPlugin
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender
+import org.bukkit.entity.Player
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
 import ru.pepej.kitpvp.commands.*
@@ -16,6 +17,7 @@ import ru.pepej.kitpvp.kit.KitManager
 import ru.pepej.kitpvp.kit.KitManager.kitDelay
 import ru.pepej.kitpvp.kit.KitManager.setupKits
 import ru.pepej.kitpvp.listeners.EventListener
+import ru.pepej.kitpvp.menusystem.PlayerMenuUtility
 import ru.pepej.kitpvp.utils.PlaceholderApiManager
 import ru.pepej.kitpvp.utils.message
 import java.util.*
@@ -26,6 +28,7 @@ import kotlin.collections.HashSet
 class KitPvPCore : KotlinPlugin() {
 
     companion object {
+        private val playerMenuUtilitymap = HashMap<Player, PlayerMenuUtility>()
         val timesPlayed = HashMap<UUID, Int>()
         val currentKit = HashMap<UUID, Kit>()
         lateinit var kitConfig: Config
@@ -36,8 +39,19 @@ class KitPvPCore : KotlinPlugin() {
         lateinit var cs: ConsoleCommandSender
         lateinit var plugin: KitPvPCore
             private set
-    }
 
+
+        fun getPlayerMenuUtility(p: Player): PlayerMenuUtility {
+            return if (playerMenuUtilitymap.containsKey(p)) {
+                playerMenuUtilitymap[p]!!
+            } else {
+                val playerMenuUtility = PlayerMenuUtility(p)
+                playerMenuUtilitymap[p] = playerMenuUtility
+                playerMenuUtility
+            }
+
+        }
+    }
     init {
         plugin = this
         cs = Bukkit.getConsoleSender()
@@ -67,7 +81,6 @@ class KitPvPCore : KotlinPlugin() {
         // Registering commands
 
         getCommand("kits").executor = CommandManager()
-        getCommand("kits").tabCompleter = TabCompleter()
         if (!setupEconomy()) {
             server.pluginManager.disablePlugin(this)
             return
