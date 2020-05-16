@@ -12,7 +12,14 @@ import ru.pepej.kitpvp.kit.KitManager.getKitByName
 import ru.pepej.kitpvp.utils.*
 import java.lang.NumberFormatException
 
-class CreateCommand : SubCommand("create", "$COMMANDS_PERMISSION.create", "Создать кит", "/kits create <Имя> <Цена> <Задержка(Сек)> <Отображаемое имя>", "c", false) {
+class CreateCommand
+    : SubCommand(
+    name = "create",
+    description = "Создать кит",
+    syntax = "/kits create <Имя> <Цена> <Задержка(Сек)> <Отображаемое имя>",
+    alias = "c",
+    tabCompletable =  false
+) {
     override fun execute(player: Player, args: Array<out String>) {
         if (args.size < 4) {
             player.message(NOT_ENOUGH_ARGS)

@@ -15,7 +15,14 @@ import ru.pepej.kitpvp.kit.KitManager.kitDelay
 import ru.pepej.kitpvp.utils.*
 import java.util.*
 
-class RemoveCommand : SubCommand("remove", "$COMMANDS_PERMISSION.remove", "Удалить кит", "/kits remove <Кит>", "r", true) {
+class RemoveCommand
+    : SubCommand(
+    name = "remove",
+    description = "Удалить кит",
+    syntax = "/kits remove <Кит>",
+    alias = "r",
+    tabCompletable = true
+) {
     override fun execute(player: Player, args: Array<out String>) {
 
         if (args.size < 2) {

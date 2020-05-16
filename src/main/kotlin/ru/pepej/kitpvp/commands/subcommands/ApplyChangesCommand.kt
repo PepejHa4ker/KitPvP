@@ -11,13 +11,16 @@ import ru.pepej.kitpvp.commands.subcommands.EditCommand.Companion.editingKit
 import ru.pepej.kitpvp.kit.KitManager.setupKits
 import ru.pepej.kitpvp.utils.*
 
-class ApplyChangesCommand : SubCommand("apply", "$COMMANDS_PERMISSION.apply", "Применить изменения", "/kits apply", "a", false) {
+class ApplyChangesCommand
+    : SubCommand(
+    name = "apply",
+    description =  "Применить изменения",
+    syntax =  "/kits apply",
+    alias = "a",
+    tabCompletable = false
+) {
 
     override fun execute(player: Player, args: Array<out String>) {
-        if (!player.hasPermission(APPLY_COMMAND)) {
-            player.message(NO_PERMISSION)
-            return
-        }
         if (editingKit.contains(player.uniqueId)) {
             val k = editingKit[player.uniqueId]!!
             val e = PlayerApplyChangesEvent(player, k)

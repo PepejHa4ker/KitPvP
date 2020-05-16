@@ -19,7 +19,14 @@ import ru.pepej.kitpvp.utils.TimeUtil.formatTime
 import ru.pepej.kitpvp.utils.hover
 import ru.pepej.kitpvp.utils.message
 
-class KitCommand : SubCommand("give", "$COMMANDS_PERMISSION.give", "Взять кит", "/kits give <Кит> [Игрок]", "g", true) {
+class KitCommand
+    : SubCommand(
+    name = "give",
+    description = "Взять кит",
+    syntax = "/kits give <Кит> [Игрок]",
+    alias = "g",
+    tabCompletable = true
+) {
     override fun execute(player: Player, args: Array<out String>) {
 
         if(args.size < 2) {

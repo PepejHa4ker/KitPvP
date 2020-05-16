@@ -4,6 +4,7 @@ package ru.pepej.kitpvp.listeners
 
 
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.KListener
+import br.com.devsrsouza.kotlinbukkitapi.extensions.event.displaced
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.event
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.events
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI
@@ -231,7 +232,7 @@ class Listener(override val plugin: KitPvPCore) : KListener<KitPvPCore> {
             }
 
             event<PlayerMoveEvent> {
-                if (from == to) return@event
+                if(!displaced) return@event
                 for (a in arenas) {
                     if (isInArena(this, a)) {
                         player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 60, 0))

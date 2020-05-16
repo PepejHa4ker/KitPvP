@@ -1,11 +1,10 @@
-package ru.pepej.kitpvp.menusystem
+package ru.pepej.kitpvp.menu
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
-import org.bukkit.inventory.ItemStack
 import ru.pepej.kitpvp.utils.item
 import ru.pepej.kitpvp.utils.unaryPlus
 

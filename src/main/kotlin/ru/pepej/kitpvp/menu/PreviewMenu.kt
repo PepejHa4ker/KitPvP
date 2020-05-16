@@ -1,4 +1,4 @@
-package ru.pepej.kitpvp.menusystem
+package ru.pepej.kitpvp.menu
 
 import org.bukkit.Material
 import org.bukkit.entity.Player

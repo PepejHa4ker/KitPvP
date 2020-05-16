@@ -14,7 +14,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerLoginEvent
@@ -32,7 +31,7 @@ import ru.pepej.kitpvp.kit.KitManager.getKitByName
 import ru.pepej.kitpvp.listeners.Listener.Companion.arenas
 import ru.pepej.kitpvp.listeners.Listener.Companion.isShootIsBlackHole
 import ru.pepej.kitpvp.listeners.Listener.Companion.snb
-import ru.pepej.kitpvp.menusystem.Menu
+import ru.pepej.kitpvp.menu.Menu
 import ru.pepej.kitpvp.tasks.BlidnessArenaTask
 import ru.pepej.kitpvp.tasks.BombTask
 import ru.pepej.kitpvp.tasks.HookTask

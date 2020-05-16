@@ -9,7 +9,14 @@ import ru.pepej.kitpvp.utils.*
 import java.util.*
 import kotlin.collections.HashMap
 
-class EditCommand : SubCommand("edit", "$COMMANDS_PERMISSION.edit", "Изменить кит", "/kits edit <Кит>", "e", true) {
+class EditCommand
+    : SubCommand(
+    name = "edit",
+    description = "Изменить кит",
+    syntax = "/kits edit <Кит>",
+    alias = "e",
+    tabCompletable = true
+) {
     companion object {
         val editingKit = HashMap<UUID, Kit>()
     }

@@ -37,6 +37,11 @@ class CommandManager : TabExecutor {
             sender.message(ONLY_PLAYERS)
             return true
         }
+
+        if(!sender.hasPermission("$COMMANDS_PERMISSION.kits")) {
+            sender.message(NO_PERMISSION)
+            return true
+        }
         for (i in getSubCommands().withIndex()) {
             if (args.isEmpty()) {
                 sender.message(
@@ -45,7 +50,7 @@ class CommandManager : TabExecutor {
                 )
                 getSubCommands().forEach {
                     val toPrint = mutableListOf<String>()
-                    if(sender.hasPermission(it.permission)) {
+                    if (sender.hasPermission(it.permission)) {
                         toPrint.add("&c${it.syntax}&7(${it.alias}) &6- &c${it.description}")
                     }
                     toPrint.forEach { msg -> sender.message(msg) }
@@ -55,7 +60,11 @@ class CommandManager : TabExecutor {
             if (args[0].equals(
                     getSubCommands()[i.index].name,
                     true
-                ) || args[0].equals(getSubCommands()[i.index].alias, true)
+                )
+                || args[0].equals(
+                    getSubCommands()[i.index].alias,
+                    true
+                )
             ) {
                 if (!sender.hasPermission(getSubCommands()[i.index].permission)) {
                     sender.message(NO_PERMISSION)
@@ -75,13 +84,13 @@ class CommandManager : TabExecutor {
         alias: String,
         args: Array<out String>
     ): MutableList<String>? {
-        if(!sender.hasPermission("$COMMANDS_PERMISSION.kit")) {
+        if (!sender.hasPermission("$COMMANDS_PERMISSION.kits")) {
             return null
         }
-        if(args.size == 1) {
+        if (args.size == 1) {
             val toPrint = mutableListOf<String>()
-            for(cmd in getSubCommands()) {
-                if(sender.hasPermission(cmd.permission)) {
+            for (cmd in getSubCommands()) {
+                if (sender.hasPermission(cmd.permission)) {
                     toPrint.add(cmd.name)
                 }
             }
@@ -91,9 +100,9 @@ class CommandManager : TabExecutor {
 
         if (args.size == 2) {
             val kitsName = mutableListOf<String>()
-            for(cmd in getSubCommands()) {
-                if(args[0].equals(cmd.name,true)) {
-                    if(!cmd.tabCompletable) {
+            for (cmd in getSubCommands()) {
+                if (args[0].equals(cmd.name, true)) {
+                    if (!cmd.tabCompletable) {
                         return null
                     }
                 }

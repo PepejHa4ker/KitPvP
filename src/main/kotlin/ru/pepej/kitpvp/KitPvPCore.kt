@@ -10,14 +10,13 @@ import org.bukkit.entity.Player
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
 import ru.pepej.kitpvp.commands.*
-import ru.pepej.kitpvp.commands.subcommands.*
 import ru.pepej.kitpvp.configuration.Config
 import ru.pepej.kitpvp.kit.Kit
 import ru.pepej.kitpvp.kit.KitManager
 import ru.pepej.kitpvp.kit.KitManager.kitDelay
 import ru.pepej.kitpvp.kit.KitManager.setupKits
 import ru.pepej.kitpvp.listeners.EventListener
-import ru.pepej.kitpvp.menusystem.PlayerMenuUtility
+import ru.pepej.kitpvp.menu.PlayerMenuUtility
 import ru.pepej.kitpvp.utils.PlaceholderApiManager
 import ru.pepej.kitpvp.utils.message
 import java.util.*

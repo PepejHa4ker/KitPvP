@@ -4,7 +4,14 @@ import org.bukkit.entity.Player
 import ru.pepej.kitpvp.commands.CommandManager.Companion.getSubCommands
 import ru.pepej.kitpvp.utils.*
 
-class HelpCommand : SubCommand("help", "$COMMANDS_PERMISSION.help", "Помощь", "/kits help", "h", false) {
+class HelpCommand
+    : SubCommand(
+    name = "help",
+    description = "Помощь",
+    syntax = "/kits help",
+    alias = "h",
+    tabCompletable = false
+) {
     override fun execute(player: Player, args: Array<out String>) {
 
         player.message(
