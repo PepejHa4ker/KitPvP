@@ -6,9 +6,6 @@ package ru.pepej.kitpvp.listeners
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.KListener
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.event
 import br.com.devsrsouza.kotlinbukkitapi.extensions.event.events
-import br.com.devsrsouza.kotlinbukkitapi.extensions.item.item
-import br.com.devsrsouza.kotlinbukkitapi.extensions.item.meta
-import br.com.devsrsouza.kotlinbukkitapi.extensions.text.unaryPlus
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI
 import org.bukkit.Color
 import org.bukkit.Material
@@ -34,6 +31,9 @@ import ru.pepej.kitpvp.tasks.BlazeRodTask
 import ru.pepej.kitpvp.tasks.PullTask
 import ru.pepej.kitpvp.tasks.TntTask
 import ru.pepej.kitpvp.tasks.TorpedoTask
+import ru.pepej.kitpvp.utils.item
+import ru.pepej.kitpvp.utils.meta
+import ru.pepej.kitpvp.utils.unaryPlus
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -51,11 +51,9 @@ class Listener(override val plugin: KitPvPCore) : KListener<KitPvPCore> {
         val isShootIsTorpeda = HashMap<Player, Boolean>()
         val lastDamager = HashMap<Player, Player>()
         val arenas = mutableListOf<BlidnessArena>()
-        val deathChestplate = item(Material.DIAMOND_CHESTPLATE).apply {
-            meta<ItemMeta> {
-                displayName = +"&c&lБронежилет M3+"
-                lore = listOf(+"&6Этот нагрудик позволяет вам выбрасывать динамит после смерти. Не теряйте его.")
-            }
+        val deathChestplate = item(Material.DIAMOND_CHESTPLATE) {
+            displayName = +"&c&lБронежилет M3+"
+            lore = listOf(+"&6Этот нагрудик позволяет вам выбрасывать динамит после смерти. Не теряйте его.")
         }
 
         val evilEyeChestplate = item(Material.LEATHER_CHESTPLATE).apply {
@@ -63,18 +61,16 @@ class Listener(override val plugin: KitPvPCore) : KListener<KitPvPCore> {
                 displayName = +"&c&lКуртка от сглаза"
                 lore = listOf(+"&6Этот нагрудик позволяет вам ослеплять после смерти. Не теряйте его.")
             }
-
             meta<LeatherArmorMeta> {
                 color = Color.fromRGB(105, 128, 124)
             }
         }
 
-        val deathBow = item(Material.BOW).apply {
-            meta<ItemMeta> {
-                displayName = +"&c&lГранатомёт"
-                lore = listOf(+"&8Тяжесть II", +"&6Эксплозия I")
-                addEnchant(Enchantment.ARROW_INFINITE, 1, true)
-            }
+        val deathBow = item(Material.BOW) {
+            displayName = +"&c&lГранатомёт"
+            lore = listOf(+"&8Тяжесть II", +"&6Эксплозия I")
+            addEnchant(Enchantment.ARROW_INFINITE, 1, true)
+
         }
         val tntBullet = item(Material.TNT) { displayName = +"&7Гранаты" }
 

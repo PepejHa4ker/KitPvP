@@ -4,6 +4,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import ru.pepej.kitpvp.api.events.KitPvPEvent
 import ru.pepej.kitpvp.kit.Kit
+import ru.pepej.kitpvp.user.StatType
 
 /**
  * abstract player event class
@@ -55,6 +56,12 @@ class PlayerApplyChangesEvent(
     p: Player,
     k: Kit
 ): KitPvPPlayerEvent(p, k)
+
+class PlayerChangeStatisticEvent(
+    val player: Player,
+    val stat: StatType,
+    val amount: Int
+): KitPvPEvent()
 
 
 

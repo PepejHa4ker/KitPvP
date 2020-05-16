@@ -8,13 +8,3 @@ depend:
 commands:
   kits:
     description: none
-  create:
-    description: none
-  remove:
-    description: none
-  apply:
-    description: none
-  edit:
-    description: none
-  preview:
-    description: none

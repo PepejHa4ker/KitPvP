@@ -4,8 +4,8 @@ package ru.pepej.kitpvp.kit
 
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
-import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.KitPvPCore.Companion.cs
+import ru.pepej.kitpvp.KitPvPCore.Companion.kit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitData
 import ru.pepej.kitpvp.utils.message
@@ -23,7 +23,7 @@ object KitManager {
                     kitConfig.getString("$s.displayname"),
                     kitConfig.getLong("$s.delay")
                 )
-                KitPvPCore.kit.add(k)
+                kit.add(k)
                 cs.message("&cКит '$s' загружен!")
             } else {
                 cs.message("&cКиты не найдены... Создайте их!")
@@ -38,7 +38,7 @@ object KitManager {
     }
 
     fun getKitByName(name: String): Kit? {
-        for (k in KitPvPCore.kit) {
+        for (k in kit) {
             if (k.kitName.equals(name, true)) {
                 return k
             }
@@ -47,7 +47,7 @@ object KitManager {
     }
 
     fun getKits(): HashSet<Kit> {
-        return KitPvPCore.kit
+        return kit
     }
 
 }

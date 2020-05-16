@@ -9,13 +9,13 @@ import org.bukkit.command.ConsoleCommandSender
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
 import ru.pepej.kitpvp.commands.*
+import ru.pepej.kitpvp.commands.subcommands.*
 import ru.pepej.kitpvp.configuration.Config
 import ru.pepej.kitpvp.kit.Kit
 import ru.pepej.kitpvp.kit.KitManager
 import ru.pepej.kitpvp.kit.KitManager.kitDelay
 import ru.pepej.kitpvp.kit.KitManager.setupKits
 import ru.pepej.kitpvp.listeners.EventListener
-import ru.pepej.kitpvp.listeners.Listener
 import ru.pepej.kitpvp.utils.PlaceholderApiManager
 import ru.pepej.kitpvp.utils.message
 import java.util.*
@@ -24,7 +24,6 @@ import kotlin.collections.HashSet
 
 
 class KitPvPCore : KotlinPlugin() {
-
 
     companion object {
         val timesPlayed = HashMap<UUID, Int>()
@@ -59,24 +58,16 @@ class KitPvPCore : KotlinPlugin() {
             timesPlayed[p.uniqueId] = playerData.getInt("${p.uniqueId}.timesplayed")
             if (playerData.getString("${p.uniqueId}.lastclass") != null) {
                 val kit = KitManager.getKitByName(playerData.getString("${p.uniqueId}.lastclass"))
-                currentKit[p.uniqueId] = KitManager.getKitByName(playerData.getString("${p.uniqueId}.lastclass"))!!
-                p.message("&cKit ${kit?.kitName} loaded")
+                currentKit[p.uniqueId] = kit!!
             }
         }
 
-        Listener(this)
+//        Listener(this)
         server.pluginManager.registerEvents(EventListener(), this)
         // Registering commands
-        getCommand("create").executor = CreateCommand()
-        getCommand("kits").executor = KitCommand()
+
+        getCommand("kits").executor = CommandManager()
         getCommand("kits").tabCompleter = TabCompleter()
-        getCommand("remove").tabCompleter = TabCompleter()
-        getCommand("remove").executor = RemoveCommand()
-        getCommand("apply").executor = ApplyChangesCommand()
-        getCommand("edit").executor = EditCommand()
-        getCommand("edit").tabCompleter = TabCompleter()
-        getCommand("preview").executor = PreviewCommand()
-        getCommand("preview").tabCompleter = TabCompleter()
         if (!setupEconomy()) {
             server.pluginManager.disablePlugin(this)
             return
