@@ -6,8 +6,6 @@ import br.com.devsrsouza.kotlinbukkitapi.extensions.bukkit.onlinePlayers
 import br.com.devsrsouza.kotlinbukkitapi.extensions.item.item
 import br.com.devsrsouza.kotlinbukkitapi.extensions.text.unaryPlus
 import com.gmail.filoghost.holographicdisplays.api.Hologram
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI
-import de.likewhat.customheads.CustomHeads
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -18,7 +16,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import ru.pepej.kitpvp.BlidnessArena
 import ru.pepej.kitpvp.KitPvPCore.Companion.currentKit
 import ru.pepej.kitpvp.KitPvPCore.Companion.playerData
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
@@ -28,14 +25,8 @@ import ru.pepej.kitpvp.api.events.player.PlayerKilledByPlayerEvent
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
 import ru.pepej.kitpvp.kit.KitManager.getKitByName
-import ru.pepej.kitpvp.listeners.Listener.Companion.arenas
-import ru.pepej.kitpvp.listeners.Listener.Companion.isShootIsBlackHole
-import ru.pepej.kitpvp.listeners.Listener.Companion.snb
 import ru.pepej.kitpvp.menu.Menu
-import ru.pepej.kitpvp.tasks.BlidnessArenaTask
-import ru.pepej.kitpvp.tasks.BombTask
 import ru.pepej.kitpvp.tasks.HookTask
-import ru.pepej.kitpvp.tasks.PullTask
 import ru.pepej.kitpvp.user.StatType
 import ru.pepej.kitpvp.user.UserManager
 import ru.pepej.kitpvp.user.UserManager.loadStatistics
@@ -66,60 +57,60 @@ class EventListener : Listener {
         }
     }
 
-    @EventHandler
-    fun onBlackHoleClick(e: PlayerInteractEvent) {
-        val p = e.player
-        if (snb.containsKey(p)) {
-            val bhHolo = HologramsAPI.createHologram(plugin, snb[p]!!.location.add(0.0, 1.5, 0.0))
-            bhHolo.appendTextLine(+"&0&lЧёрная дыра")
-            bhHolo.appendTextLine("")
-            bhHolo.appendTextLine("")
-            CustomHeads.getCategoryManager().getCategory("6").heads.filter { it.id == 60 }.forEach {
-                bhHolo.appendItemLine(it.plainItem)
-            }
-            plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
-                bhHolo.delete()
-            }, 60)
-            PullTask(p, snb[p]!!.location, 0.5, 100).runTaskTimer(plugin, 0, 1)
-            snb[p]!!.remove()
-            snb.remove(p)
-            isShootIsBlackHole[p] = false
-            p.message("&cВы успешно активировали Чёрную Дыру")
-        }
-    }
+//    @EventHandler
+//    fun onBlackHoleClick(e: PlayerInteractEvent) {
+//        val p = e.player
+//        if (snb.containsKey(p)) {
+//            val bhHolo = HologramsAPI.createHologram(plugin, snb[p]!!.location.add(0.0, 1.5, 0.0))
+//            bhHolo.appendTextLine(+"&0&lЧёрная дыра")
+//            bhHolo.appendTextLine("")
+//            bhHolo.appendTextLine("")
+//            CustomHeads.getCategoryManager().getCategory("6").heads.filter { it.id == 60 }.forEach {
+//                bhHolo.appendItemLine(it.plainItem)
+//            }
+//            plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
+//                bhHolo.delete()
+//            }, 60)
+//            PullTask(p, snb[p]!!.location, 0.5, 100).runTaskTimer(plugin, 0, 1)
+//            snb[p]!!.remove()
+//            snb.remove(p)
+//            isShootIsBlackHole[p] = false
+//            p.message("&cВы успешно активировали Чёрную Дыру")
+//        }
+//    }
 
-    @EventHandler
-    fun onBombClick(e: PlayerInteractEvent) {
-        val item = e.item ?: return
-        val p = e.player
-        if (item.itemMeta.displayName == +"&c&lУстановить мину") {
-            if (e.clickedBlock != null) {
-                if (bombCd.containsKey(p.uniqueId)) {
-                    val secondsLeft =
-                        (bombCd[p.uniqueId]!! / 1000 + 120) - (System.currentTimeMillis() / 1000)
-                    if (secondsLeft > 0) {
-                        p.message("&cОсталось &6$secondsLeft &cсекунд.")
-                        e.isCancelled = true
-                        return
-                    }
-                }
-                bombCd[p.uniqueId] = System.currentTimeMillis()
-                p.message("&cВы успешно использовали Мину")
-                p.message("&cАллах-Акбар!")
-                val bhHolo = HologramsAPI.createHologram(plugin, e.clickedBlock.location.add(0.5, 1.8, 0.5))
-                picked[p] = bhHolo
-                bhHolo.appendTextLine(+"&6&lМина")
-                CustomHeads.getCategoryManager().getCategory("6").heads.filter { it.id == 60 }.forEach {
-                    bhHolo.appendItemLine(it.plainItem)
-                }
-                isForceActivated[p] = false
-                BombTask(100, p).runTaskTimer(plugin, 0, 1)
-            } else {
-                p.message("&cВы должны кликать по блоку для установки мины.")
-            }
-            e.isCancelled = true
-        }
-    }
+//    @EventHandler
+//    fun onBombClick(e: PlayerInteractEvent) {
+//        val item = e.item ?: return
+//        val p = e.player
+//        if (item.itemMeta.displayName == +"&c&lУстановить мину") {
+//            if (e.clickedBlock != null) {
+//                if (bombCd.containsKey(p.uniqueId)) {
+//                    val secondsLeft =
+//                        (bombCd[p.uniqueId]!! / 1000 + 120) - (System.currentTimeMillis() / 1000)
+//                    if (secondsLeft > 0) {
+//                        p.message("&cОсталось &6$secondsLeft &cсекунд.")
+//                        e.isCancelled = true
+//                        return
+//                    }
+//                }
+//                bombCd[p.uniqueId] = System.currentTimeMillis()
+//                p.message("&cВы успешно использовали Мину")
+//                p.message("&cАллах-Акбар!")
+//                val bhHolo = HologramsAPI.createHologram(plugin, e.clickedBlock.location.add(0.5, 1.8, 0.5))
+//                picked[p] = bhHolo
+//                bhHolo.appendTextLine(+"&6&lМина")
+//                CustomHeads.getCategoryManager().getCategory("6").heads.filter { it.id == 60 }.forEach {
+//                    bhHolo.appendItemLine(it.plainItem)
+//                }
+//                isForceActivated[p] = false
+//                BombTask(100, p).runTaskTimer(plugin, 0, 1)
+//            } else {
+//                p.message("&cВы должны кликать по блоку для установки мины.")
+//            }
+//            e.isCancelled = true
+//        }
+//    }
 
     @EventHandler
     fun onBombActivate(e: PlayerInteractEvent) {
@@ -157,27 +148,27 @@ class EventListener : Listener {
         }
     }
 
-    @EventHandler
-    fun onEvilEyeClick(e: PlayerInteractEvent) {
-        val i = e.item ?: return
-        val p = e.player
-        if (i == evilEyeItem) {
-            if (evilCd.containsKey(p.uniqueId)) {
-                val secondsLeft =
-                    (evilCd[p.uniqueId]!! / 1000 + 3600) - (System.currentTimeMillis() / 1000)
-                if (secondsLeft > 0) {
-                    p.message("&cОсталось &6$secondsLeft &cсекунд.")
-                    e.isCancelled = true
-                    return
-                }
-            }
-            evilCd[p.uniqueId] = System.currentTimeMillis()
-            val a = BlidnessArena(p.world, p.location.x, p.location.y, p.location.z, 15.0)
-            arenas.add(a)
-            BlidnessArenaTask(a).runTaskTimer(plugin, 0, 20)
-            p.message("&cВы успешно активировали &8Сглаз-Арену")
-        }
-    }
+//    @EventHandler
+//    fun onEvilEyeClick(e: PlayerInteractEvent) {
+//        val i = e.item ?: return
+//        val p = e.player
+//        if (i == evilEyeItem) {
+//            if (evilCd.containsKey(p.uniqueId)) {
+//                val secondsLeft =
+//                    (evilCd[p.uniqueId]!! / 1000 + 3600) - (System.currentTimeMillis() / 1000)
+//                if (secondsLeft > 0) {
+//                    p.message("&cОсталось &6$secondsLeft &cсекунд.")
+//                    e.isCancelled = true
+//                    return
+//                }
+//            }
+//            evilCd[p.uniqueId] = System.currentTimeMillis()
+//            val a = BlidnessArena(p.world, p.location.x, p.location.y, p.location.z, 15.0)
+//            arenas.add(a)
+//            BlidnessArenaTask(a).runTaskTimer(plugin, 0, 20)
+//            p.message("&cВы успешно активировали &8Сглаз-Арену")
+//        }
+//    }
 
     @EventHandler
     fun onHookClick(e: PlayerInteractEvent) {

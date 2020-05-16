@@ -18,16 +18,16 @@ class HelpCommand
             "          &cKit&6PvP",
             "          &6Author:&a pepej"
         )
-        getSubCommands().forEach {
-            val toPrint = mutableListOf<String>()
-            if(player.hasPermission(it.permission)) {
-                toPrint.add("&c${it.syntax}&8(${it.alias}) &6- &c${it.description}")
-            }
-            if(toPrint.isEmpty()) {
-                player.message("&cУ Вас нет доступных команд.")
-                return
-            }
-            toPrint.forEach { msg -> player.message(msg) }
+        val permittedCommands = getSubCommands().filter { player.hasPermission(it.permission) }
+        val toPrint = mutableListOf<String>()
+        permittedCommands.forEach { permittedCommand ->
+            toPrint.add("&c${permittedCommand.syntax}&7(${permittedCommand.alias}) &6- &c${permittedCommand.description}")
         }
+        if (permittedCommands.isEmpty()) {
+            player.message("&cУ Вас нет доступных команд.")
+            return
+        }
+        toPrint.forEach { player.message(it) }
+
     }
 }

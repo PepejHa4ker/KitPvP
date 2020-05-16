@@ -1,7 +1,6 @@
 package ru.pepej.kitpvp.commands
 
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import ru.pepej.kitpvp.KitPvPCore
@@ -38,27 +37,13 @@ class CommandManager : TabExecutor {
             return true
         }
 
-        if(!sender.hasPermission("$COMMANDS_PERMISSION.kits")) {
+        if (!sender.hasPermission("$COMMANDS_PERMISSION.kits")) {
             sender.message(NO_PERMISSION)
             return true
         }
         for (i in getSubCommands().withIndex()) {
             if (args.isEmpty()) {
-                sender.message(
-                    "          &cKit&6PvP",
-                    "          &6Author:&a pepej"
-                )
-                getSubCommands().forEach {
-                    val toPrint = mutableListOf<String>()
-                    if (sender.hasPermission(it.permission)) {
-                        toPrint.add("&c${it.syntax}&7(${it.alias}) &6- &c${it.description}")
-                    }
-                    if(toPrint.isEmpty()) {
-                        sender.message("&cУ Вас нет доступных команд.")
-                        return true
-                    }
-                    toPrint.forEach { msg -> sender.message(msg) }
-                }
+                sender.message("&cВведите /kits help для получения списка доступных Вам команд.")
                 return true
             }
             if (args[0].equals(
@@ -105,7 +90,7 @@ class CommandManager : TabExecutor {
         if (args.size == 2) {
             val kitsName = mutableListOf<String>()
             for (cmd in getSubCommands()) {
-                if (args[0].equals(cmd.name, true)) {
+                if (args[0].equals(cmd.name, true) || args[0].equals(cmd.alias, true)) {
                     if (!cmd.tabCompletable) {
                         return null
                     }

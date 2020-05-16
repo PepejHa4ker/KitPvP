@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.getPlayerMenuUtility
 import ru.pepej.kitpvp.kit.KitManager
 import ru.pepej.kitpvp.menu.PreviewMenu
-import ru.pepej.kitpvp.utils.COMMANDS_PERMISSION
 import ru.pepej.kitpvp.utils.KIT_NOT_EXIST
 import ru.pepej.kitpvp.utils.NOT_ENOUGH_ARGS
 import ru.pepej.kitpvp.utils.message
