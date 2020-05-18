@@ -6,7 +6,7 @@ import ru.pepej.kitpvp.api.events.KitPvPEvent
 /**
  * @param type return this update type
  * Calling on server update
- */
+*/
 class ServerUpdateEvent(val type: UpdateType) : KitPvPEvent()
 
 /**

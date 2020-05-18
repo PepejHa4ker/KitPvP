@@ -2,6 +2,7 @@
 
 package ru.pepej.kitpvp.commands.subcommands
 
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.currentKit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kit
@@ -19,14 +20,19 @@ class RemoveCommand
     : SubCommand(
     name = "remove",
     description = "Удалить кит",
-    syntax = "/kits remove <Кит>",
-    alias = "r",
-    tabCompletable = true
+    type = CommandType.KITS
 ) {
-    override fun onSubCommand(player: Player, args: Array<out String>) {
 
+    override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
+
+
+        if(sender !is Player) {
+            sender.message(ONLY_PLAYERS)
+            return
+        }
+        val player = sender.toPlayer()
         if (args.size < 2) {
-            player.message(NOT_ENOUGH_ARGS)
+            sender.message(NOT_ENOUGH_ARGS)
             return
         }
         val kitName = args[1]

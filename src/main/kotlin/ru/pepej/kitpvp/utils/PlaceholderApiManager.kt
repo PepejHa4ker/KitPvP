@@ -36,7 +36,7 @@ class PlaceholderApiManager : PlaceholderExpansion() {
             "deaths"     -> return "${UserManager.getUser(p).getStat(StatType.DEATHS)}"
             "killstreak" -> return "${UserManager.getUser(p).getStat(StatType.KILLSTREAK)}"
             "kits"       -> return "${UserManager.getUser(p).getStat(StatType.KITS_PICKED)}"
-            "playtime"   -> return if (timesPlayed.containsKey(p.uniqueId)) formatTime(timesPlayed[p.uniqueId]!!) else "0"
+            "playtime"   -> return if (timesPlayed.containsKey(p.uniqueId)) timesPlayed[p.uniqueId]!!.toDateFormat() else "0"
         }
         return null
     }

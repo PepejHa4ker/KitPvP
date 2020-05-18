@@ -1,11 +1,11 @@
 package ru.pepej.kitpvp.configuration
 
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.plugin.java.JavaPlugin
+import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import java.io.File
 
 
-class Config(private val plugin: JavaPlugin, fileName: String) :
+class Config(fileName: String) :
     YamlConfiguration() {
     private val fileName: String = fileName + if (fileName.endsWith(".yml")) "" else ".yml"
     private fun createFiles() {

@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import ru.pepej.kitpvp.KitPvPCore.Companion.currentKit
 import ru.pepej.kitpvp.kit.Kit
+import ru.pepej.kitpvp.utils.TimeUtil.formatTime
 import java.lang.NullPointerException
 
 fun CommandSender.message(message: String) = this.sendMessage(+"&7[&6Kit&cPvP&7] $message")
@@ -34,5 +35,6 @@ fun <T : BaseComponent> T.hover(hoverEvent: HoverEvent) = apply { this.hoverEven
 fun <T : BaseComponent> T.showText(component: BaseComponent) = hover(HoverEvent(HoverEvent.Action.SHOW_TEXT, arrayOf(component)))
 operator fun String.unaryPlus(): String = translateColor()
 operator fun String.unaryMinus() = replace('§', '&')
+fun Int.toDateFormat() = formatTime(this)
 
 

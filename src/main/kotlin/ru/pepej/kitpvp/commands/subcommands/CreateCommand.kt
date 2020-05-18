@@ -1,5 +1,6 @@
 package ru.pepej.kitpvp.commands.subcommands
 
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -17,14 +18,19 @@ class CreateCommand
     name = "create",
     description = "Создать кит",
     syntax = "/kits create <Имя> <Цена> <Задержка(Сек)> <Отображаемое имя>",
-    alias = "c",
-    tabCompletable =  false
+    type = CommandType.LAST
 ) {
-    override fun onSubCommand(player: Player, args: Array<out String>) {
-        if (args.size < 4) {
-            player.message(NOT_ENOUGH_ARGS)
+
+    override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
+        if(sender !is Player) {
+            sender.message(ONLY_PLAYERS)
             return
         }
+        if (args.size < 4) {
+            sender.message(NOT_ENOUGH_ARGS)
+            return
+        }
+        val player = sender.toPlayer()
         val kitName = args[1]
         val cost: Double
         val delay: Long
@@ -33,6 +39,7 @@ class CreateCommand
         } catch (e: NumberFormatException) {
             player.message("&c${args[2]} должно быть дробным числом!")
             return
+
         }
         try {
             delay = args[3].toLong()

@@ -1,10 +1,11 @@
 package ru.pepej.kitpvp.commands.subcommands
 
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
-import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.KitPvPCore.Companion.kit
+import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerApplyChangesEvent
 import ru.pepej.kitpvp.commands.subcommands.EditCommand.Companion.editingKit
@@ -16,11 +17,15 @@ class ApplyChangesCommand
     name = "apply",
     description =  "Применить изменения",
     syntax =  "/kits apply",
-    alias = "a",
-    tabCompletable = false
+    type = CommandType.LAST
 ) {
 
-    override fun onSubCommand(player: Player, args: Array<out String>) {
+    override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
+        if(sender !is Player) {
+            sender.message(ONLY_PLAYERS)
+            return
+        }
+        val player = sender.toPlayer()
         if (editingKit.contains(player.uniqueId)) {
             val k = editingKit[player.uniqueId]!!
             val e = PlayerApplyChangesEvent(player, k)
@@ -28,15 +33,15 @@ class ApplyChangesCommand
             if (e.isCancelled) {
                 return
             }
-            KitPvPCore.kitConfig.set(
+            kitConfig.set(
                 "${k.kitName}.items",
                 player.inventory.contents.toList().filterNotNull() as ArrayList<ItemStack>
             )
-            KitPvPCore.kitConfig.set("${k.kitName}.effects", player.activePotionEffects as ArrayList<PotionEffect>)
-            KitPvPCore.kitConfig.save()
+            kitConfig.set("${k.kitName}.effects", player.activePotionEffects as ArrayList<PotionEffect>)
+            kitConfig.save()
             player.inventory.clear()
             player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
-            KitPvPCore.kitConfig.save()
+            kitConfig.save()
             kit.remove(k)
             setupKits()
             editingKit.remove(player.uniqueId)

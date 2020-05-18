@@ -9,26 +9,25 @@ import ru.pepej.kitpvp.utils.item
 import ru.pepej.kitpvp.utils.unaryPlus
 
 abstract class Menu(
-    private var menuName: String,
-    private var slots: Int,
-    private var playerMenuUtility: PlayerMenuUtility
-) :
-    InventoryHolder {
+    private val menuName: String,
+    private val slots: Int,
+    private val playerMenuUtility: PlayerMenuUtility
+) : InventoryHolder {
+
     private lateinit var inventory: Inventory
     override fun getInventory(): Inventory {
         return inventory
     }
 
-    private var fill = item(Material.matchMaterial("160"),1,7) { displayName = +"&c" }
+    private val fill = item(Material.matchMaterial("160"),1,7) { displayName = +"&c" }
 
     abstract fun handleMenu(e: InventoryClickEvent)
     abstract fun setMenuItems()
     fun open() {
-        inventory = Bukkit.createInventory(this, slots, +menuName)
+        inventory = Bukkit.createInventory(null, slots, +menuName)
         setMenuItems()
         setFillerGlass()
         playerMenuUtility.owner.openInventory(inventory)
-
     }
 
     private fun setFillerGlass() {

@@ -35,9 +35,8 @@ object UserManager {
         return user
     }
 
-    fun getUsers(): List<User?>? {
-        val users: MutableList<User?> =
-            ArrayList()
+    fun getUsers(): MutableList<User> {
+        val users = ArrayList<User>()
         for (player in onlinePlayers()) {
             users.add(getUser(player!!))
         }

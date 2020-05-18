@@ -1,5 +1,6 @@
 package ru.pepej.kitpvp.commands.subcommands
 
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerEditKitEvent
@@ -13,20 +14,23 @@ class EditCommand
     : SubCommand(
     name = "edit",
     description = "Изменить кит",
-    syntax = "/kits edit <Кит>",
-    alias = "e",
-    tabCompletable = true
+    type = CommandType.KITS
 ) {
     companion object {
         val editingKit = HashMap<UUID, Kit>()
     }
 
-    override fun onSubCommand(player: Player, args: Array<out String>) {
+    override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
         if(args.size < 2) {
-            player.message(NOT_ENOUGH_ARGS)
+            sender.message(NOT_ENOUGH_ARGS)
             return
         }
 
+        if(sender !is Player) {
+            sender.message(ONLY_PLAYERS)
+            return
+        }
+        val player = sender.toPlayer()
         val name = args[1]
         val kit = getKitByName(name) ?: return player.message(KIT_NOT_EXIST)
         val e = PlayerEditKitEvent(player,kit)

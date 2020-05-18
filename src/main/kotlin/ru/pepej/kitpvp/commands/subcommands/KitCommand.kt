@@ -3,10 +3,13 @@
 package ru.pepej.kitpvp.commands.subcommands
 
 
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import ru.pepej.kitpvp.KitPvPCore
+import ru.pepej.kitpvp.KitPvPCore.Companion.currentKit
 import ru.pepej.kitpvp.KitPvPCore.Companion.economy
+import ru.pepej.kitpvp.KitPvPCore.Companion.kit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
+import ru.pepej.kitpvp.KitPvPCore.Companion.playerData
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerChangeKitEvent
 import ru.pepej.kitpvp.kit.KitManager.getKitByName
@@ -21,29 +24,35 @@ class KitCommand
     name = "give",
     description = "Взять кит",
     syntax = "/kits give <Кит> [Игрок]",
-    alias = "g",
-    tabCompletable = true
+    type = CommandType.KITS
 ) {
-    override fun onSubCommand(player: Player, args: Array<out String>) {
 
+
+    override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
+
+        if(sender !is Player) {
+            sender.message(ONLY_PLAYERS)
+            return
+        }
+        val player = sender.toPlayer()
         if (args.size < 2) {
-            player.message(NOT_ENOUGH_ARGS)
+            sender.message(NOT_ENOUGH_ARGS)
             return
         }
         val kitName = args[1]
-        val kit = getKitByName(name) ?: return player.message(KIT_NOT_EXIST)
+        val k = getKitByName(kitName) ?: return player.message(KIT_NOT_EXIST)
         if (args.size == 2) {
-            if (economy.getBalance(player) > kit.cost) {
-                if (kitDelay.contains(kit)) {
+            if (economy.getBalance(player) > k.cost) {
+                if (kitDelay.contains(k)) {
                     val secondsLeft =
-                        (kitDelay[kit]!! / 1000 + kitConfig.getLong("$kitName.delay")) - (System.currentTimeMillis() / 1000)
+                        (kitDelay[k]!! / 1000 + kitConfig.getLong("$kitName.delay")) - (System.currentTimeMillis() / 1000)
                     if (secondsLeft > 0) {
                         player.message("&cОсталось&6${formatTime(secondsLeft.toInt())}")
                         return
                     }
                 }
-                kitDelay[kit] = System.currentTimeMillis()
-                val event = PlayerChangeKitEvent(player, kit)
+                kitDelay[k] = System.currentTimeMillis()
+                val event = PlayerChangeKitEvent(player, k)
                 plugin.server.pluginManager.callEvent(event)
                 if (event.isCancelled) {
                     return
@@ -51,64 +60,64 @@ class KitCommand
                 val u = UserManager.getUser(player)
                 u.setStat(StatType.KITS_PICKED, u.getStat(StatType.KITS_PICKED)!! + 1)
                 player.hover(
-                    "&cВы успешно взяли кит ${kit.formattedName}",
-                    "&cЦена кита: &6${if (kit.cost > 0) "${kit.cost}" else "Бесплатно!"}\n" +
-                            "&cВещей в ките: &6${if (kit.item.size > 0) "${kit.item.size}" else "Пусто!"}\n" +
-                            "&cЭффектов в ките: &6${if (kit.effects.size > 0) "${kit.effects.size}" else "Пусто!"}\n" +
-                            "&cЗадержка:&6${if (kit.delay > 0) formatTime(kit.delay.toInt()) else " Без задержки!"}"
+                    "&cВы успешно взяли кит ${k.formattedName}",
+                    "&cЦена кита: &6${if (k.cost > 0) "${k.cost}" else "Бесплатно!"}\n" +
+                            "&cВещей в ките: &6${if (k.item.size > 0) "${k.item.size}" else "Пусто!"}\n" +
+                            "&cЭффектов в ките: &6${if (k.effects.size > 0) "${k.effects.size}" else "Пусто!"}\n" +
+                            "&cЗадержка:&6${if (k.delay > 0) formatTime(k.delay.toInt()) else " Без задержки!"}"
                 )
 
                 player.inventory.clear()
                 player.activePotionEffects.forEach {
                     player.removePotionEffect(it.type)
                 }
-                KitPvPCore.currentKit[player.uniqueId] = kit
-                kit.item.forEach {
+                currentKit[player.uniqueId] = k
+                k.item.forEach {
                     player.inventory.addItem(it)
                 }
-                kit.effects.forEach {
+                k.effects.forEach {
                     player.addPotionEffect(it)
                 }
-                economy.withdrawPlayer(player, kit.cost)
-                KitPvPCore.playerData.set("${player.uniqueId}.lastclass", kit.kitName)
-                KitPvPCore.playerData.save()
+                economy.withdrawPlayer(player, k.cost)
+                playerData.set("${player.uniqueId}.lastclass", k.kitName)
+                playerData.save()
             } else {
                 player.message("&cУ вас недостаточно средств.")
             }
         } else if (args.size == 3) {
             val p = plugin.server.getPlayer(args[2]) ?: return
-            if (economy.getBalance(p) > kit.cost) {
-                if (kitDelay.contains(kit)) {
+            if (economy.getBalance(p) > k.cost) {
+                if (kitDelay.contains(k)) {
                     val secondsLeft =
-                        (kitDelay[kit]!! / 1000 + kitConfig.getLong("$kitName.delay")) - (System.currentTimeMillis() / 1000)
+                        (kitDelay[k]!! / 1000 + kitConfig.getLong("$kitName.delay")) - (System.currentTimeMillis() / 1000)
                     if (secondsLeft > 0) {
                         p.message("&cОсталось &6$secondsLeft &cсекунд.")
                         return
                     }
                 }
-                kitDelay[kit] = System.currentTimeMillis()
-                val event = PlayerChangeKitEvent(p, kit)
+                kitDelay[k] = System.currentTimeMillis()
+                val event = PlayerChangeKitEvent(p, k)
                 plugin.server.pluginManager.callEvent(event)
                 if (event.isCancelled) {
                     return
                 }
                 val u = UserManager.getUser(p)
                 u.setStat(StatType.KITS_PICKED, u.getStat(StatType.KITS_PICKED)!! + 1)
-                p.message("&cВы успешно взяли кит ${kit.formattedName}, &cцена: &6${kit.cost}")
+                p.message("&cВы успешно взяли кит ${k.formattedName}, &cцена: &6${k.cost}")
                 p.inventory.clear()
                 p.activePotionEffects.forEach {
                     p.removePotionEffect(it.type)
                 }
-                KitPvPCore.currentKit[p.uniqueId] = kit
-                kit.item.forEach {
+                currentKit[p.uniqueId] = k
+                k.item.forEach {
                     p.inventory.addItem(it)
                 }
-                kit.effects.forEach {
+                k.effects.forEach {
                     p.addPotionEffect(it)
                 }
-                economy.withdrawPlayer(p, kit.cost)
-                KitPvPCore.playerData.set("${p.uniqueId}.lastclass", kit.kitName)
-                KitPvPCore.playerData.save()
+                economy.withdrawPlayer(p, k.cost)
+                playerData.set("${p.uniqueId}.lastclass", k.kitName)
+                playerData.save()
             } else {
                 p.message("&cУ вас недостаточно средств.")
             }

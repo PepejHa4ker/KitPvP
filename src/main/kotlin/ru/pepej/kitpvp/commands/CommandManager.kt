@@ -1,11 +1,17 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package ru.pepej.kitpvp.commands
 
+import br.com.devsrsouza.kotlinbukkitapi.extensions.hasPermissionOrStar
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.commands.subcommands.*
-import ru.pepej.kitpvp.utils.*
+import ru.pepej.kitpvp.utils.COMMANDS_PERMISSION
+import ru.pepej.kitpvp.utils.NO_PERMISSION
+import ru.pepej.kitpvp.utils.message
+import ru.pepej.kitpvp.utils.toPlayer
 
 class CommandManager : TabExecutor {
 
@@ -24,6 +30,7 @@ class CommandManager : TabExecutor {
         subCommands.add(RemoveCommand())
         subCommands.add(PreviewCommand())
         subCommands.add(KitCommand())
+        subCommands.add(StatsCommand())
     }
 
     override fun onCommand(
@@ -32,35 +39,26 @@ class CommandManager : TabExecutor {
         label: String,
         args: Array<out String>
     ): Boolean {
-        if (!sender.isPlayer()) {
-            sender.message(ONLY_PLAYERS)
-            return true
-        }
-
         if (!sender.hasPermission("$COMMANDS_PERMISSION.kits")) {
             sender.message(NO_PERMISSION)
             return true
         }
         for (i in getSubCommands().withIndex()) {
-            if (args.isEmpty()) {
-                sender.message("&cВведите /kits help для получения списка доступных Вам команд.")
-                return true
-            }
-            if (args[0].equals(
-                    getSubCommands()[i.index].name,
-                    true
-                )
-                || args[0].equals(
-                    getSubCommands()[i.index].alias,
-                    true
-                )
-            ) {
-                if (!sender.hasPermission(getSubCommands()[i.index].permission)) {
-                    sender.message(NO_PERMISSION)
+            when {
+                args.isEmpty() -> {
+                    sender.message("&cВведите /kits help для получения списка доступных Вам команд.")
                     return true
                 }
-                getSubCommands()[i.index].onSubCommand(sender.toPlayer(), args)
-                return true
+                args[0].equals(getSubCommands()[i.index].name, true)
+                        || args[0].equals(getSubCommands()[i.index].alias, true) -> {
+                    if (!sender.hasPermissionOrStar(getSubCommands()[i.index].permission)) {
+                        sender.message(NO_PERMISSION)
+                        return true
+                    }
+                    getSubCommands()[i.index].onSubCommand(sender.toPlayer(), args)
+
+                    return true
+                }
             }
         }
         return true
@@ -91,7 +89,7 @@ class CommandManager : TabExecutor {
             val kitsName = mutableListOf<String>()
             for (cmd in getSubCommands()) {
                 if (args[0].equals(cmd.name, true) || args[0].equals(cmd.alias, true)) {
-                    if (!cmd.tabCompletable) {
+                    if (cmd.type != CommandType.KITS) {
                         return null
                     }
                 }
