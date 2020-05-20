@@ -3,7 +3,6 @@
 package ru.pepej.kitpvp
 
 import br.com.devsrsouza.kotlinbukkitapi.architecture.KotlinPlugin
-import br.com.devsrsouza.kotlinbukkitapi.extensions.event.registerEvents
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender

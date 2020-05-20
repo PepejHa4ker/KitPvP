@@ -15,8 +15,10 @@ class KitListener(override val plugin: KitPvPCore) : KListener<KitPvPCore> {
             if (type != UpdateType.SECOND) return@event
             for (player in Bukkit.getOnlinePlayers()) {
                 timesPlayed[player.uniqueId]!!.plus(1)
-
             }
         }
+
     }
 }
+
+

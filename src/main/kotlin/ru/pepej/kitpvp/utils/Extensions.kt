@@ -30,16 +30,21 @@ fun CommandSender.toPlayer(): Player = this as? Player ?: throw NullPointerExcep
 fun Player.getKitByPlayer(): Kit? {
     return currentKit[this.uniqueId] ?: return null
 }
-fun Player.hover(chatMessage: String, hoverMessage : String) = this.sendMessage(TextComponent(+"&7[&6Kit&cPvP&7] $chatMessage").showText(TextComponent(+hoverMessage)))
+//ITEM EXTENSIONS
 inline fun <reified T : ItemMeta> ItemStack.meta(block: T.() -> Unit): ItemStack = apply { itemMeta = (itemMeta as? T)?.apply(block) ?: itemMeta }
 inline fun item(material: Material, amount: Int = 1, data: Short = 0, meta: ItemMeta.() -> Unit = {}): ItemStack = ItemStack(material, amount, data).meta(meta)
 fun Inventory.add(items: ArrayList<ItemStack>) = items.forEach { this.addItem(it) }
-fun String.translateColor(code: Char = '&'): String = ChatColor.translateAlternateColorCodes(code, this)
+//BUNGEECORD TEXTCOMPONENT EXTENSIONS
+fun Player.hover(chatMessage: String, hoverMessage : String) = this.sendMessage(TextComponent(+"&7[&6Kit&cPvP&7] $chatMessage").showText(TextComponent(+hoverMessage)))
 fun <T : BaseComponent> T.hover(hoverEvent: HoverEvent) = apply { this.hoverEvent = hoverEvent }
 fun <T : BaseComponent> T.showText(component: BaseComponent) = hover(HoverEvent(HoverEvent.Action.SHOW_TEXT, arrayOf(component)))
+// PRIMITIVE TYPES EXTENSIONS
 operator fun String.unaryPlus(): String = translateColor()
 operator fun String.unaryMinus() = replace('§', '&')
+fun String.translateColor(code: Char = '&'): String = ChatColor.translateAlternateColorCodes(code, this)
+
 fun Int.toDateFormat() = formatTime(this)
+//COLLECTIONS EXTENSIONS
 infix fun Array<out String>.isLowerThan(size: Int): Boolean = this.size < size
 inline fun <reified T : Player> Collection<T>.findOrNull(predicate: T.() -> Boolean): List<T?>? {
     val toReturn: MutableList<T?> = mutableListOf()
@@ -49,6 +54,8 @@ inline fun <reified T : Player> Collection<T>.findOrNull(predicate: T.() -> Bool
     }
     return null
 }
+//------------------------------------------------------------------------------------------------------------------------
+// EVENT EXTENSIONS
 inline fun <reified T : Event> KListener<*>.event(
     priority: EventPriority = EventPriority.NORMAL,
     ignoreCancelled: Boolean = true,
@@ -64,8 +71,8 @@ inline fun <reified T : Event> Listener.event(
         T::class.java,
         this,
         priority,
-        { _, event ->
-            (event as? T)?.block()
+        {_, e ->
+            (e as? T)?.block()
         },
         plugin,
         ignoreCancelled
