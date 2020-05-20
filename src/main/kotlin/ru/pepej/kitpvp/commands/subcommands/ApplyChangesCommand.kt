@@ -9,7 +9,7 @@ import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerApplyChangesEvent
 import ru.pepej.kitpvp.commands.subcommands.EditCommand.Companion.editingKit
-import ru.pepej.kitpvp.kit.KitManager.setupKits
+import ru.pepej.kitpvp.model.KitManager.setupKits
 import ru.pepej.kitpvp.utils.*
 
 class ApplyChangesCommand

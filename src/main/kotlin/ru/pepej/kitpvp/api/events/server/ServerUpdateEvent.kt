@@ -1,6 +1,5 @@
 package ru.pepej.kitpvp.api.events.server
 
-import org.bukkit.Server
 import ru.pepej.kitpvp.api.events.KitPvPEvent
 
 /**

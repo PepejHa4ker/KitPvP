@@ -3,29 +3,29 @@
 package ru.pepej.kitpvp
 
 import br.com.devsrsouza.kotlinbukkitapi.architecture.KotlinPlugin
+import br.com.devsrsouza.kotlinbukkitapi.extensions.event.registerEvents
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.api.events.server.ServerUpdateEvent
 import ru.pepej.kitpvp.api.events.server.UpdateType
-import ru.pepej.kitpvp.commands.*
+import ru.pepej.kitpvp.commands.CommandManager
 import ru.pepej.kitpvp.configuration.Config
-import ru.pepej.kitpvp.kit.Kit
-import ru.pepej.kitpvp.kit.KitManager
-import ru.pepej.kitpvp.kit.KitManager.kitDelay
-import ru.pepej.kitpvp.kit.KitManager.setupKits
 import ru.pepej.kitpvp.listeners.EventListener
+import ru.pepej.kitpvp.listeners.KitListener
 import ru.pepej.kitpvp.menu.PlayerMenuUtility
+import ru.pepej.kitpvp.model.Kit
+import ru.pepej.kitpvp.model.KitManager.getKitByName
+import ru.pepej.kitpvp.model.KitManager.kitDelay
+import ru.pepej.kitpvp.model.KitManager.setupKits
 import ru.pepej.kitpvp.utils.PlaceholderApiManager
 import ru.pepej.kitpvp.utils.message
 import java.util.*
 import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 
 
 class KitPvPCore : KotlinPlugin() {
-
     companion object {
         private val playerMenuUtilitymap = HashMap<Player, PlayerMenuUtility>()
         val timesPlayed = HashMap<UUID, Int>()
@@ -38,8 +38,6 @@ class KitPvPCore : KotlinPlugin() {
         lateinit var cs: ConsoleCommandSender
         lateinit var plugin: KitPvPCore
             private set
-
-
         fun getPlayerMenuUtility(p: Player): PlayerMenuUtility {
             return if (playerMenuUtilitymap.containsKey(p)) {
                 playerMenuUtilitymap[p]!!
@@ -48,37 +46,34 @@ class KitPvPCore : KotlinPlugin() {
                 playerMenuUtilitymap[p] = playerMenuUtility
                 playerMenuUtility
             }
-
         }
     }
+
     init {
         plugin = this
         cs = Bukkit.getConsoleSender()
     }
-
     override fun onPluginEnable() {
         kitConfig = Config("kits")
         kitData = Config("kitsdata")
+
         playerData = Config("playerData")
         for(type in UpdateType.values()) {
             server.scheduler.scheduleSyncRepeatingTask(plugin, {
                 server.pluginManager.callEvent(ServerUpdateEvent(type)) // Registering new update-threads
             }, 0, type.delay)
         }
+        EventListener()
+        KitListener(this)
         PlaceholderApiManager().register()
         setupKits()
         for (p in server.onlinePlayers) {
             timesPlayed[p.uniqueId] = playerData.getInt("${p.uniqueId}.timesplayed")
             if (playerData.getString("${p.uniqueId}.lastclass") != null) {
-                val kit = KitManager.getKitByName(playerData.getString("${p.uniqueId}.lastclass"))
+                val kit = getKitByName(playerData.getString("${p.uniqueId}.lastclass"))
                 currentKit[p.uniqueId] = kit!!
             }
         }
-
-//        Listener(this)
-        server.pluginManager.registerEvents(EventListener(), this)
-        // Registering commands
-
         getCommand("kits").executor = CommandManager()
         if (!setupEconomy()) {
             server.pluginManager.disablePlugin(this)
@@ -90,7 +85,6 @@ class KitPvPCore : KotlinPlugin() {
         cs.message(" &3Author: &apepej")
         cs.message("&4&m---------")
     }
-
     // Setting up vault
     private fun setupEconomy(): Boolean {
         if (server.pluginManager.getPlugin("Vault") == null) {
@@ -100,6 +94,7 @@ class KitPvPCore : KotlinPlugin() {
         economy = rsp.provider
         return true
     }
+
 
     override fun onPluginDisable() {
         kitDelay.keys.forEach {
@@ -111,7 +106,6 @@ class KitPvPCore : KotlinPlugin() {
             kitData.save()
         }
 
-        // Saving players play time
         for (p in server.onlinePlayers) {
             p.closeInventory()
             if (timesPlayed.contains(p.uniqueId)) {

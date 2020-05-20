@@ -4,7 +4,6 @@ author: pepej
 name: KitPvP
 depend:
   - KotlinBukkitAPI
-  - TouchscreenHolograms
 commands:
   kits:
     description: none

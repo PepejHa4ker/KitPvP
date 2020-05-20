@@ -12,29 +12,29 @@ class Config(fileName: String) :
         try {
             val file = File(plugin.dataFolder, fileName)
             if (!file.exists()) {
-                if (plugin.getResource(fileName) != null) {
+                if (plugin.getResource(fileName) != null)
                     plugin.saveResource(fileName, false)
-                } else {
+                else
                     save(file)
-                }
+
             }
             load(file)
             try {
                 save(file)
-            } catch (ignored: Exception) {
-            }
-        } catch (ignored: Exception) {
-        }
+            } catch (ignored: Exception) {}
+
+        } catch (ignored: Exception) {}
     }
+
 
     fun save() {
         try {
             save(File(plugin.dataFolder, fileName))
-        } catch (ignored: Exception) {
-        }
+        } catch (ignored: Exception) {}
     }
 
     init {
         createFiles()
     }
+
 }

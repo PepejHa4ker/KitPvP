@@ -5,8 +5,8 @@ package ru.pepej.kitpvp.commands.subcommands
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.getPlayerMenuUtility
-import ru.pepej.kitpvp.kit.KitManager
 import ru.pepej.kitpvp.menu.PreviewMenu
+import ru.pepej.kitpvp.model.KitManager.getKitByName
 import ru.pepej.kitpvp.utils.*
 
 class PreviewCommand
@@ -16,7 +16,7 @@ class PreviewCommand
     type = CommandType.KITS
 ) {
     override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
-        if(args.size < 2) {
+        if(args isLowerThan 2) {
             sender.message(NOT_ENOUGH_ARGS)
             return
         }
@@ -25,7 +25,7 @@ class PreviewCommand
             return
         }
         val player = sender.toPlayer()
-        val kit = KitManager.getKitByName(args[1]) ?: return player.message(KIT_NOT_EXIST)
+        val kit = getKitByName(args[1]) ?: return player.message(KIT_NOT_EXIST)
         PreviewMenu(kit, getPlayerMenuUtility(player)).open()
     }
 }

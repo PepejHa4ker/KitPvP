@@ -5,7 +5,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.meta.PotionMeta
-import ru.pepej.kitpvp.kit.Kit
+import ru.pepej.kitpvp.model.Kit
 import ru.pepej.kitpvp.utils.add
 import ru.pepej.kitpvp.utils.item
 import ru.pepej.kitpvp.utils.meta

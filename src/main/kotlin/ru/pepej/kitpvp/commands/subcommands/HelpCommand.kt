@@ -1,7 +1,6 @@
 package ru.pepej.kitpvp.commands.subcommands
 
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import ru.pepej.kitpvp.commands.CommandManager.Companion.getSubCommands
 import ru.pepej.kitpvp.utils.*
 

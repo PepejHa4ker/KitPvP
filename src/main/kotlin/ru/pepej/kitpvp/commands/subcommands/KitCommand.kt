@@ -7,13 +7,12 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.currentKit
 import ru.pepej.kitpvp.KitPvPCore.Companion.economy
-import ru.pepej.kitpvp.KitPvPCore.Companion.kit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.playerData
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerChangeKitEvent
-import ru.pepej.kitpvp.kit.KitManager.getKitByName
-import ru.pepej.kitpvp.kit.KitManager.kitDelay
+import ru.pepej.kitpvp.model.KitManager.getKitByName
+import ru.pepej.kitpvp.model.KitManager.kitDelay
 import ru.pepej.kitpvp.user.StatType
 import ru.pepej.kitpvp.user.UserManager
 import ru.pepej.kitpvp.utils.*
@@ -35,7 +34,7 @@ class KitCommand
             return
         }
         val player = sender.toPlayer()
-        if (args.size < 2) {
+        if (args isLowerThan 2) {
             sender.message(NOT_ENOUGH_ARGS)
             return
         }

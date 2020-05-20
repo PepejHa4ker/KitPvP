@@ -1,23 +1,35 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package ru.pepej.kitpvp.kit
+package ru.pepej.kitpvp.model
 
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
+import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.KitPvPCore.Companion.cs
 import ru.pepej.kitpvp.KitPvPCore.Companion.kit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitData
 import ru.pepej.kitpvp.utils.message
+import java.util.*
+import kotlin.collections.HashSet
+
+data class Kit(
+    val kitName: String,
+    val cost: Double,
+    val item: ArrayList<ItemStack>,
+    val effects: ArrayList<PotionEffect>,
+    val formattedName: String,
+    val delay: Long
+)
 
 object KitManager {
     val kitDelay = HashMap<Kit, Long>()
-
     fun setupKits() {
         for (s in kitConfig.getConfigurationSection("").getKeys(false)) {
             if (s != null) {
                 cs.message("&cЗагружаю кит '$s'...")
-                val k = Kit(s, kitConfig.getDouble("$s.price"),
+                val k = Kit(
+                    s, kitConfig.getDouble("$s.price"),
                     kitConfig.get("$s.items") as ArrayList<ItemStack>,
                     kitConfig.get("$s.effects") as ArrayList<PotionEffect>,
                     kitConfig.getString("$s.displayname"),
@@ -51,3 +63,14 @@ object KitManager {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,7 @@
 @file:Suppress("DEPRECATION")
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.3.71"
     id("com.github.johnrengelman.shadow") version "5.2.0"
@@ -11,6 +13,7 @@ version = "1.0.0"
 
 val spigotVersion = "1.12.2-R0.1-SNAPSHOT"
 val kotlinApiVersion = "0.1.0-SNAPSHOT"
+val litebansapiversion = "0.3.2"
 
 repositories {
     jcenter()
@@ -27,6 +30,7 @@ dependencies {
     compileOnly(fileTree("C:\\Users\\Глад Валакас\\Desktop\\Server\\lobby\\plugins\\TouchscreenHolograms.jar"))
     compileOnly(fileTree("C:\\Users\\Глад Валакас\\Desktop\\Server\\lobby\\plugins\\CustomHeads.jar"))
     compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
+    compileOnly("com.gitlab.ruany:LiteBansAPI:$litebansapiversion")
     compileOnly("net.md-5:bungeecord-api:1.12-SNAPSHOT")
     compileOnly("br.com.devsrsouza.kotlinbukkitapi:core:$kotlinApiVersion")
     compileOnly("br.com.devsrsouza.kotlinbukkitapi:architecture:$kotlinApiVersion")
@@ -50,3 +54,7 @@ tasks {
     }
 }
 
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    freeCompilerArgs = listOf("-Xinline-classes")
+}

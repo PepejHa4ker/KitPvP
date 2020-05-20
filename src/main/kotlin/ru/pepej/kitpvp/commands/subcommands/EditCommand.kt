@@ -4,8 +4,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerEditKitEvent
-import ru.pepej.kitpvp.kit.Kit
-import ru.pepej.kitpvp.kit.KitManager.getKitByName
+import ru.pepej.kitpvp.model.Kit
+import ru.pepej.kitpvp.model.KitManager.getKitByName
 import ru.pepej.kitpvp.utils.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -21,7 +21,7 @@ class EditCommand
     }
 
     override fun onSubCommand(sender: CommandSender, args: Array<out String>) {
-        if(args.size < 2) {
+        if(args isLowerThan 2) {
             sender.message(NOT_ENOUGH_ARGS)
             return
         }

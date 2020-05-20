@@ -8,8 +8,8 @@ import ru.pepej.kitpvp.KitPvPCore.Companion.kit
 import ru.pepej.kitpvp.KitPvPCore.Companion.kitConfig
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerCreateKitEvent
-import ru.pepej.kitpvp.kit.Kit
-import ru.pepej.kitpvp.kit.KitManager.getKitByName
+import ru.pepej.kitpvp.model.Kit
+import ru.pepej.kitpvp.model.KitManager.getKitByName
 import ru.pepej.kitpvp.utils.*
 import java.lang.NumberFormatException
 
@@ -26,7 +26,7 @@ class CreateCommand
             sender.message(ONLY_PLAYERS)
             return
         }
-        if (args.size < 4) {
+        if (args isLowerThan 4) {
             sender.message(NOT_ENOUGH_ARGS)
             return
         }

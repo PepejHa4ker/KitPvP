@@ -3,7 +3,7 @@ package ru.pepej.kitpvp.api.events.player
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import ru.pepej.kitpvp.api.events.KitPvPEvent
-import ru.pepej.kitpvp.kit.Kit
+import ru.pepej.kitpvp.model.Kit
 import ru.pepej.kitpvp.user.StatType
 
 /**

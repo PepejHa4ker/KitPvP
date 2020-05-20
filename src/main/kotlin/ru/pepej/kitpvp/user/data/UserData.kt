@@ -5,6 +5,8 @@ import ru.pepej.kitpvp.user.User
 
 interface UserData {
 
+
+
     fun saveStatistic(user: User, stat: StatType)
 
     fun loadStatistics(user: User)

@@ -5,8 +5,6 @@ import org.bukkit.entity.Player
 import ru.pepej.kitpvp.KitPvPCore.Companion.timesPlayed
 import ru.pepej.kitpvp.user.StatType
 import ru.pepej.kitpvp.user.UserManager
-import ru.pepej.kitpvp.utils.TimeUtil.formatTime
-
 class PlaceholderApiManager : PlaceholderExpansion() {
     override fun getVersion(): String {
         return "1.0.0"
@@ -30,12 +28,13 @@ class PlaceholderApiManager : PlaceholderExpansion() {
 
     override fun onPlaceholderRequest(p: Player?, params: String): String? {
         p ?: return ""
+        val u = UserManager.getUser(p)
         when (params) {
             "currentkit" -> return if (p.getKitByPlayer() != null) p.getKitByPlayer()!!.formattedName else "У вас нет кита!"
-            "kills"      -> return "${UserManager.getUser(p).getStat(StatType.KILLS)}"
-            "deaths"     -> return "${UserManager.getUser(p).getStat(StatType.DEATHS)}"
-            "killstreak" -> return "${UserManager.getUser(p).getStat(StatType.KILLSTREAK)}"
-            "kits"       -> return "${UserManager.getUser(p).getStat(StatType.KITS_PICKED)}"
+            "kills"      -> return "${u.getStat(StatType.KILLS)}"
+            "deaths"     -> return "${u.getStat(StatType.DEATHS)}"
+            "killstreak" -> return "${u.getStat(StatType.KILLSTREAK)}"
+            "kits"       -> return "${u.getStat(StatType.KITS_PICKED)}"
             "playtime"   -> return if (timesPlayed.containsKey(p.uniqueId)) timesPlayed[p.uniqueId]!!.toDateFormat() else "0"
         }
         return null

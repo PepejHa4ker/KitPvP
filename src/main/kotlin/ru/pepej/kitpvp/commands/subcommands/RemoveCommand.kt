@@ -11,8 +11,8 @@ import ru.pepej.kitpvp.KitPvPCore.Companion.kitData
 import ru.pepej.kitpvp.KitPvPCore.Companion.playerData
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
 import ru.pepej.kitpvp.api.events.player.PlayerRemoveKitEvent
-import ru.pepej.kitpvp.kit.KitManager.getKitByName
-import ru.pepej.kitpvp.kit.KitManager.kitDelay
+import ru.pepej.kitpvp.model.KitManager.getKitByName
+import ru.pepej.kitpvp.model.KitManager.kitDelay
 import ru.pepej.kitpvp.utils.*
 import java.util.*
 
@@ -31,7 +31,7 @@ class RemoveCommand
             return
         }
         val player = sender.toPlayer()
-        if (args.size < 2) {
+        if (args isLowerThan 2) {
             sender.message(NOT_ENOUGH_ARGS)
             return
         }
