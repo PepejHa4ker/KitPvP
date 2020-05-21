@@ -2,16 +2,12 @@
 
 package ru.pepej.kitpvp.commands
 
-import br.com.devsrsouza.kotlinbukkitapi.extensions.hasPermissionOrStar
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import ru.pepej.kitpvp.KitPvPCore
 import ru.pepej.kitpvp.commands.subcommands.*
-import ru.pepej.kitpvp.utils.COMMANDS_PERMISSION
-import ru.pepej.kitpvp.utils.NO_PERMISSION
-import ru.pepej.kitpvp.utils.message
-import ru.pepej.kitpvp.utils.toPlayer
+import ru.pepej.kitpvp.utils.*
 
 class CommandManager : TabExecutor {
 
@@ -51,7 +47,7 @@ class CommandManager : TabExecutor {
                 }
                 args[0].equals(getSubCommands()[i.index].name, true)
                         || args[0].equals(getSubCommands()[i.index].alias, true) -> {
-                    if (!sender.hasPermissionOrStar(getSubCommands()[i.index].permission)) {
+                    if (!sender.hasPermission(getSubCommands()[i.index].permission)) {
                         sender.message(NO_PERMISSION)
                         return true
                     }

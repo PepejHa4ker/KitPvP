@@ -2,10 +2,10 @@ package ru.pepej.kitpvp.configuration
 
 import org.bukkit.configuration.file.YamlConfiguration
 import ru.pepej.kitpvp.KitPvPCore.Companion.plugin
+import ru.pepej.kitpvp.commands.subcommands.SubCommand
 import java.io.File
 
-
-class Config(fileName: String) :
+open class Config(fileName: String) :
     YamlConfiguration() {
     private val fileName: String = fileName + if (fileName.endsWith(".yml")) "" else ".yml"
     private fun createFiles() {
@@ -21,16 +21,27 @@ class Config(fileName: String) :
             load(file)
             try {
                 save(file)
-            } catch (ignored: Exception) {}
+            } catch (ignored: Exception) {
+            }
 
-        } catch (ignored: Exception) {}
+        } catch (ignored: Exception) {
+        }
     }
 
 
     fun save() {
         try {
             save(File(plugin.dataFolder, fileName))
-        } catch (ignored: Exception) {}
+        } catch (ignored: Exception) {
+        }
+    }
+
+    inline fun <reified R> withConfig(block: Config.() -> R): R {
+        return block()
+    }
+
+    inline fun <reified T : SubCommand> make(block: T.() -> Unit) {
+
     }
 
     init {

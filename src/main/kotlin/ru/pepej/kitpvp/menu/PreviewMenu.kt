@@ -1,15 +1,16 @@
 package ru.pepej.kitpvp.menu
 
+import br.com.devsrsouza.kotlinbukkitapi.extensions.item.item
+import com.pepej.spigotApi.api.util.extensions.add
+import com.pepej.spigotApi.api.util.extensions.meta
+import com.pepej.spigotApi.api.util.extensions.unaryPlus
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.meta.PotionMeta
 import ru.pepej.kitpvp.model.Kit
-import ru.pepej.kitpvp.utils.add
-import ru.pepej.kitpvp.utils.item
-import ru.pepej.kitpvp.utils.meta
-import ru.pepej.kitpvp.utils.unaryPlus
+
 
 class PreviewMenu(
     private val kit: Kit,

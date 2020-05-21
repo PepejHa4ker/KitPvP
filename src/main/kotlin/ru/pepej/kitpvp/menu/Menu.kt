@@ -1,12 +1,13 @@
 package ru.pepej.kitpvp.menu
 
+import com.pepej.spigotApi.api.util.extensions.item
+import com.pepej.spigotApi.api.util.extensions.unaryPlus
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
-import ru.pepej.kitpvp.utils.item
-import ru.pepej.kitpvp.utils.unaryPlus
+
 
 abstract class Menu(
     private val menuName: String,

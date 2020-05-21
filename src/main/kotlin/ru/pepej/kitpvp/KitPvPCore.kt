@@ -55,7 +55,6 @@ class KitPvPCore : KotlinPlugin() {
     override fun onPluginEnable() {
         kitConfig = Config("kits")
         kitData = Config("kitsdata")
-
         playerData = Config("playerData")
         for(type in UpdateType.values()) {
             server.scheduler.scheduleSyncRepeatingTask(plugin, {

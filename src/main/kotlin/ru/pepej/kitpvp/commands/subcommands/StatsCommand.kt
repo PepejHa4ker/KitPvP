@@ -1,5 +1,6 @@
 package ru.pepej.kitpvp.commands.subcommands
 
+import com.pepej.spigotApi.api.util.TimeUtil.formatTime
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -7,7 +8,6 @@ import ru.pepej.kitpvp.KitPvPCore.Companion.timesPlayed
 import ru.pepej.kitpvp.user.StatType
 import ru.pepej.kitpvp.user.UserManager
 import ru.pepej.kitpvp.utils.*
-import ru.pepej.kitpvp.utils.TimeUtil.formatTime
 
 @Suppress("DEPRECATION")
 class StatsCommand
